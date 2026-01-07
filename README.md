@@ -1,40 +1,40 @@
-# 禁止自动存档 - 《卡牌生存：奇幻森林》Mod
+# Stop Auto-Save – Card Survival: Fantasy Forest
 
-[![zh](https://img.shields.io/badge/lang-zh-red.svg)](README.md)
-[![en](https://img.shields.io/badge/lang-en-blue.svg)](README_en.md)
+[![zh](https://img.shields.io/badge/lang-zh-red.svg)](README_zh.md)
+[![en](https://img.shields.io/badge/lang-en-blue.svg)](README.md)
 
-> 专为《卡牌生存：奇幻森林》（Card Survival: Fantasy Forest）设计的轻量级 BepInEx Mod，**解决游戏后期因频繁自动存档导致的严重卡顿**，同时**保留手动存档、退出存档以及每日 4 点的里程碑自动存档**。
+> A lightweight BepInEx mod for Card Survival: Fantasy Forest that addresses severe late-game stutter caused by automatic saving, while preserving manual saves, exit saves, and the daily 4 AM milestone auto-save.
 
-## ✨ 功能特点
+## ✨ Key Features
 
-- ⛔ **禁用 `ActionRoutine` 触发的自动存档**  
-  游戏会通过 `GameManager.ActionRoutine`在游戏时间 10 点与 22 点时调用 `AutoSaveGame(CheckpointTypes.Latest)`，这是后期卡顿的一大原因，本 Mod 精准拦截此类调用。
+- ⛔ **Disables auto-saves triggered by `ActionRoutine`**  
+  The game invokes AutoSaveGame(CheckpointTypes.Latest) through GameManager.ActionRoutine at 10 AM and 10 PM in-game time. These scheduled saves are a major source of late-game stutter, and this mod precisely intercepts them.
 
-- ✅ **保留关键存档功能**
+- ✅ **Preserves critical save functionality**
 
-  - 手动点击“保存游戏” ✅
-  - 退出游戏时的自动保存 ✅
-  - **每日凌晨 4 点的里程碑存档（Checkpoint）✅**（该存档由`AutoSaveGame(CheckpointTypes.CurrentDay)`触发，不受影响）
+  - Manual "Save Game" from the menu ✅
+  - Auto-save on game exit ✅
+  - **Daily 4 AM milestone checkpoint ✅** (triggered by `AutoSaveGame(CheckpointTypes.CurrentDay)`, unaffected)
 
-- ⚡ **显著提升后期流畅度**  
-  尤其在拥有大量卡牌、NPC 或复杂状态的中后期，通过跳过 10 点和 22 点的自动保存，使操作更跟手。
+- ⚡ **Significantly improves late-game performance**  
+  Especially noticeable when you have a large number of cards, NPCs, or complex game states—operations feel much more responsive by skipping the auto-saves at 10 AM and 10 PM.
 
-- 🔌 **即装即用，无需配置**  
-  安装后自动生效，无任何设置项。
+- 🔌 **Plug-and-play — no configuration needed**  
+  Activates automatically upon installation. No settings to tweak.
 
-## 📦 安装方法
+## 📦 Installation
 
-1. 确保已安装 [BepInEx 5](https://github.com/BepInEx/BepInEx/releases)（适用于 Unity 游戏）。
-2. 将本 Mod 的 `.dll` 文件放入游戏目录下的 `BepInEx/plugins/` 文件夹中。
-3. 启动游戏即可。
+1. Ensure you have [BepInEx 5](https://github.com/BepInEx/BepInEx/releases) installed (for Unity games).
+2. Place this mod’s `.dll` file into the `BepInEx/plugins/` folder inside your game directory.
+3. Launch the game — it works immediately.
 
-## ⚠️ 兼容性
+## ⚠️ Compatibility
 
-- 与大多数其他 Mod 兼容（因仅 patch 存档逻辑，无侵入性修改）。
-- **不会影响成就、云存档或存档文件结构**。
+- Compatible with most other mods (non-intrusive; only patches save logic).
+- Does **not** affect achievements, cloud saves, or save file structure.
 
-## 🛠 技术原理
+## 🛠 Technical Details
 
-通过 Harmony 在 `GameLoad.AutoSaveGame(CheckpointTypes.Latest)` 方法执行前插入判断：  
-仅当调用栈包含 `GameManager.ActionRoutine` 时，才跳过存档操作。  
-其他来源（如 UI 按钮、退出流程、每日 4 点检查点）均不受影响。
+Uses Harmony to insert a prefix patch before `GameLoad.AutoSaveGame(CheckpointTypes.Latest)` executes:  
+→ If the call stack contains `GameManager.ActionRoutine`, the save is skipped.  
+→ All other sources (UI button, exit flow, 4 AM checkpoint) remain fully functional.
